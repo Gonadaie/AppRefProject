@@ -39,3 +39,9 @@ This warning can be switched off on the Team > Git > Confirmations and Warnings 
 
 !ENTRY com.sage.x3.xdt.common.core 1 0 2018-06-07 14:25:19.884
 !MESSAGE Auto update info: No updates were found in <A>available software sites</A>.
+
+!ENTRY com.sage.x3.xdt.common.core 1 0 2018-06-07 15:25:03.978
+!MESSAGE Dbgp proxy discovering finished by StatusInfo OK: null
+
+!ENTRY com.sage.x3.xdt.common.core 1 0 2018-06-07 16:25:03.982
+!MESSAGE Dbgp proxy discovering finished by StatusInfo OK: null

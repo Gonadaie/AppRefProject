@@ -1,0 +1,6 @@
+package clientProg;
+
+public class ApplicationProg {
+	private final static int PORT_SERVICE = 3500;
+	private final static String HOST = "localhost"; 
+}

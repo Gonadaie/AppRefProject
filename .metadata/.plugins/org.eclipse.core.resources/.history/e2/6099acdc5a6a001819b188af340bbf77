@@ -1,0 +1,9 @@
+package bri;
+
+public class ServiceBRI implements Runnable {
+
+	@Override
+	public abstract void run();
+
+
+}

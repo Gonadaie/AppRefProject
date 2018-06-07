@@ -1,12 +1,16 @@
 package appli;
 
+import java.net.Socket;
 import java.net.URLClassLoader;
 import java.util.Scanner;
 
 import bri.ServeurBRi;
+import bri.ServiceBRi;
+import bri.ServiceBRiClient;
 
 public class BRiLaunch {
-	private final static int PORT_SERVICE = 3000;
+	private final static int PORT_SERVICE_AMA = 3000;
+	private final static Socket  sama = null;
 	
 	public static void main(String[] args) {
 		@SuppressWarnings("resource")
@@ -20,7 +24,7 @@ public class BRiLaunch {
 		System.out.println("A tout instant, en tapant le nom de la classe, vous pouvez l'intégrer");
 		System.out.println("Les clients se connectent au serveur 3000 pour lancer une activité");
 		
-		new Thread(new ServeurBRi(PORT_SERVICE)).start();
+		new Thread(new ServeurBRi(PORT_SERVICE_AMA, ServiceBRiClient.class)).start();
 		
 		while (true){
 				try {
