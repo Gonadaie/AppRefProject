@@ -5,8 +5,9 @@ import java.net.URLClassLoader;
 import java.util.Scanner;
 
 import bri.ServeurBRi;
-import bri.ServiceBRi;
-import bri.ServiceBRiClient;
+import bri.ServiceServeurBRi;
+import bri.ServiceServeurBRiClient;
+import bri.ServiceBRiNonConformeException;
 
 public class BRiLaunch {
 	private final static int PORT_SERVICE_AMA = 3000;
@@ -19,17 +20,19 @@ public class BRiLaunch {
 		// URLClassLoader sur ftp
 		URLClassLoader urlcl = null;
 		
-		System.out.println("Bienvenue dans votre gestionnaire dynamique d'activité BRi");
-		System.out.println("Pour ajouter une activité, celle-ci doit être présente sur votre serveur ftp");
-		System.out.println("A tout instant, en tapant le nom de la classe, vous pouvez l'intégrer");
-		System.out.println("Les clients se connectent au serveur 3000 pour lancer une activité");
+		System.out.println("Bienvenue dans votre gestionnaire dynamique d'activitï¿½ BRi");
+		System.out.println("Pour ajouter une activitï¿½, celle-ci doit ï¿½tre prï¿½sente sur votre serveur ftp");
+		System.out.println("A tout instant, en tapant le nom de la classe, vous pouvez l'intï¿½grer");
+		System.out.println("Les clients se connectent au serveur 3000 pour lancer une activitï¿½");
 		
-		new Thread(new ServeurBRi(PORT_SERVICE_AMA, ServiceBRiClient.class)).start();
+		try {
+			new Thread(new ServeurBRi(PORT_SERVICE_AMA, ServiceServeurBRiClient.class)).start();
+		} catch(ServiceBRiNonConformeException e) {}
 		
 		while (true){
 				try {
 					String classeName = clavier.next();
-					// charger la classe et la déclarer au ServiceRegistry
+					// charger la classe et la dï¿½clarer au ServiceRegistry
 				} catch (Exception e) {
 					System.out.println(e);
 				}

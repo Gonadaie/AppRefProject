@@ -11,10 +11,10 @@ import java.util.Scanner;
 
 import prog.Programmeur;
 
-public class ServiceBRiProg implements ServiceBRi{
+public class ServiceServeurBRiProg implements ServiceServeurBRi{
 	private Socket client;
 	private List<Programmeur> pList = new ArrayList<Programmeur>();
-	public ServiceBRiProg(Socket socket) {
+	public ServiceServeurBRiProg(Socket socket) {
 		client = socket;
 		pList.add(new Programmeur("raphael","password", "onsaitpasencore"));
 		pList.add(new Programmeur("thibaud", "password", "onsaitpasencore"));
@@ -33,12 +33,12 @@ public class ServiceBRiProg implements ServiceBRi{
 				return;
 			}
 			out.println("\n 1-Fournir un nouveau service"
-					+ "\n 2-Mise à jour du service"
+					+ "\n 2-Mise ï¿½ jour du service"
 					+ "\n 3-Changement d'adresse de votre serveur ftp");
 			String reponse = in.readLine();
 			
-			// instancier le service numéro "choix" en lui passant la socket "client"
-			// invoquer run() pour cette instance ou la lancer dans un thread à part 
+			// instancier le service numï¿½ro "choix" en lui passant la socket "client"
+			// invoquer run() pour cette instance ou la lancer dans un thread ï¿½ part 
 				
 			}
 		catch (IOException e) {

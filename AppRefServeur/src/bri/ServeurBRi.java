@@ -8,10 +8,10 @@ import java.net.*;
 
 public class ServeurBRi implements Runnable {
 	private ServerSocket listen_socket;
-	private Class<? extends ServiceBRi> cl;
+	private Class<? extends ServiceServeurBRi> cl;
 	
 	// Cree un serveur TCP - objet de la classe ServerSocket
-	public ServeurBRi(int port, Class<? extends ServiceBRi> cl ) {
+	public ServeurBRi(int port, Class<? extends ServiceServeurBRi> cl ) throws ServiceBRiNonConformeException {
 		try {
 			listen_socket = new ServerSocket(port);
 			this.cl = cl;
