@@ -3,38 +3,40 @@ package bri;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.Socket;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ServiceRegistry {
 	// cette classe est un registre de services
-	// partag�e en concurrence par les clients et les "ajouteurs" de services,
+	// partagee en concurrence par les clients et les "ajouteurs" de services,
 	// un Vector pour cette gestion est pratique
 
-	static {
-		servicesClasses = null;
-	}
 	private static List<Class<?>> servicesClasses;
+	static {
+		servicesClasses = new LinkedList<Class <?>>();
+	}
 
-// ajoute une classe de service apr�s contr�le de la norme BLTi
-	public static void addService(Class<?> cl) throws ServiceBRiNonConformeException {
-		// v�rifier la conformit� par introspection
+// ajoute une classe de service apres controle de la norme BLTi
+	public static void addService(Class<?> cl) throws ServiceNonConformeException {
+		// verifier la conformite par introspection
 		// si non conforme --> exception avec message clair
 		// si conforme, ajout au vector
-		if(!checkServiceBRiClass(cl)) throw new ServiceBRiNonConformeException();
+		if(!checkServiceBLTiClass(cl)) throw new ServiceNonConformeException();
+		servicesClasses.add(cl);
 	}
 	
 // renvoie la classe de service (numService -1)	
-	public static void getServiceClass(int numService) {
-		
+	public static Class<?> getServiceClass(int numService) {
+		return servicesClasses.get(numService-1);
 	}
 	
-	private static boolean checkServiceBRiClass(Class<?> cl) {
+	private static boolean checkServiceBLTiClass(Class<?> cl) {
 		try {
 			
 			//Check if the class is implementing the ServiceBRi interface
 			Class<?>[] interfaces = cl.getInterfaces();
 			for(Class<?> c : interfaces) {
-				if(c != ServiceBRi.class)
+				if(c != Service.class)
 					return false;
 			}
 			
@@ -63,10 +65,13 @@ public class ServiceRegistry {
 		return false;
 	}
 	
-// liste les activit�s pr�sentes
+// liste les activites presentes
 	public static String toStringue() {
-		String result = "Activit�s pr�sentes :##";
-		// todo
+		String result = "Activites presentes :";
+		int count = 0;
+		for(Class<?> cl : servicesClasses) {
+			result = result + "\n" + (++count) + ". " + cl.getName();
+		}
 		return result;
 	}
 

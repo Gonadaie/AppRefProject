@@ -5,22 +5,22 @@ import java.io.*;
 import java.net.*;
 
 
-public class ServiceServeurBRiClient implements ServiceServeurBRi {
+public class ServiceServeurBRiAma implements ServiceServeurBRi {
 	
 	private Socket client;
 	
-	ServiceServeurBRiClient(Socket socket) {
+	public ServiceServeurBRiAma(Socket socket) {
 		client = socket;
 	}
 
 	public void run() {
 		try {BufferedReader in = new BufferedReader (new InputStreamReader(client.getInputStream ( )));
 			PrintWriter out = new PrintWriter (client.getOutputStream ( ), true);
-			out.println(ServiceRegistry.toStringue()+"##Tapez le num�ro de service d�sir� :");
+			out.println(ServiceRegistry.toStringue()+"##Tapez le numero de service desire :");
 			int choix = Integer.parseInt(in.readLine());
 			
-			// instancier le service num�ro "choix" en lui passant la socket "client"
-			// invoquer run() pour cette instance ou la lancer dans un thread � part 
+			// instancier le service numero "choix" en lui passant la socket "client"
+			// invoquer run() pour cette instance ou la lancer dans un thread a part 
 				
 			}
 		catch (IOException e) {

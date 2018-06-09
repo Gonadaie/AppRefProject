@@ -7,13 +7,13 @@ import java.net.*;
 
 
 public class ServeurBRi implements Runnable {
-	private ServerSocket listen_socket;
+	private ServerSocket listenSocket;
 	private Class<? extends ServiceServeurBRi> cl;
 	
 	// Cree un serveur TCP - objet de la classe ServerSocket
-	public ServeurBRi(int port, Class<? extends ServiceServeurBRi> cl ) throws ServiceBRiNonConformeException {
+	public ServeurBRi(int port, Class<? extends ServiceServeurBRi> cl ) {
 		try {
-			listen_socket = new ServerSocket(port);
+			listenSocket = new ServerSocket(port);
 			this.cl = cl;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -26,7 +26,7 @@ public class ServeurBRi implements Runnable {
 	public void run() {
 		try {
 			while(true){
-				new Thread(cl.getConstructor(Socket.class).newInstance(listen_socket)).start();
+				new Thread(cl.getConstructor(Socket.class).newInstance(listenSocket.accept())).start();
 			}
 		}
 		catch (Exception e) {
@@ -36,7 +36,7 @@ public class ServeurBRi implements Runnable {
 
 	 // restituer les ressources --> finalize
 	protected void finalize() throws Throwable {
-		try {this.listen_socket.close();} catch (IOException e1) {}
+		try {this.listenSocket.close();} catch (IOException e1) {}
 	}
 
 	// lancement du serveur
