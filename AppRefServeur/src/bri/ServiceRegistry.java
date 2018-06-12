@@ -1,6 +1,7 @@
 package bri;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.Socket;
 import java.util.LinkedList;
@@ -11,9 +12,9 @@ public class ServiceRegistry {
 	// partagee en concurrence par les clients et les "ajouteurs" de services,
 	// un Vector pour cette gestion est pratique
 
-	private static List<Class<?>> servicesClasses;
+	private static List<Class<? extends Service>> servicesClasses;
 	static {
-		servicesClasses = new LinkedList<Class <?>>();
+		servicesClasses = new LinkedList<Class <? extends Service>>();
 	}
 
 // ajoute une classe de service apres controle de la norme BLTi
@@ -22,11 +23,11 @@ public class ServiceRegistry {
 		// si non conforme --> exception avec message clair
 		// si conforme, ajout au vector
 		if(!checkServiceBLTiClass(cl)) throw new ServiceNonConformeException();
-		servicesClasses.add(cl);
+		servicesClasses.add((Class<? extends Service>)cl);
 	}
 	
 // renvoie la classe de service (numService -1)	
-	public static Class<?> getServiceClass(int numService) {
+	public static Class<? extends Service> getServiceClass(int numService) {
 		return servicesClasses.get(numService-1);
 	}
 	
@@ -39,16 +40,21 @@ public class ServiceRegistry {
 				if(c != Service.class)
 					return false;
 			}
+
+			System.out.println("Il est passé par ici");
 			
 			//Check if the constructor take a Socket as parameter and does not throw any exception
-			if(cl.getConstructor(Socket.class) != null) return false;
+			if(cl.getConstructor(Socket.class) == null) return false;
+			System.out.println("Et si c'était ici ???");
 			if(cl.getConstructor(Socket.class).getExceptionTypes().length > 0) return false;
-			
+
+			System.out.println("Il repassera par là");
+
 			//Check if the class is public and abstract
 			if (	Modifier.isPublic(cl.getModifiers()) &&
-					!Modifier.isAbstract(cl.getModifiers()))
+					Modifier.isAbstract(cl.getModifiers()))
 				return false;
-			
+			System.out.println("Il court il court le furet");
 			//Check if there's a final socket
 			Field[] fields = cl.getDeclaredFields();
 			boolean finalSocket = false;
@@ -56,7 +62,17 @@ public class ServiceRegistry {
 				if(Modifier.isFinal(f.getModifiers()))
 					finalSocket = true;
 			}
-			if(!finalSocket) return false; 
+			if(!finalSocket) return false;
+
+			System.out.println("Le furet du bois joliii");
+
+			//Check if there is a public static method toStringue throwing no exceptions
+		    Method toStringue = cl.getMethod("toStringue");
+			if(toStringue == null ||
+                    !Modifier.isStatic(toStringue.getModifiers()) ||
+                    !Modifier.isPublic(toStringue.getModifiers()) ||
+                    toStringue.getExceptionTypes().length > 0)
+			    return false;
 			
 			return true;
 		}

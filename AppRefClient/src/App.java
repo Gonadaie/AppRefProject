@@ -29,10 +29,14 @@ public class App {
 			PrintWriter out = new PrintWriter(s.getOutputStream(), true);
 			
 			(new Thread(in)).start();
-			while(true) {
-				out.println(sc.nextLine());
+			while(!in.isDone()) {
+				String resp = sc.nextLine();
+				if(resp == "exit") break;
+				out.println(resp);
 			}
-			
+			s.close();
+
+			System.out.println("Fermeture de la session");
 		} catch(IOException e) {e.printStackTrace();}
 	}
 }
