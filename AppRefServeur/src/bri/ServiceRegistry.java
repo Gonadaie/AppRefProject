@@ -91,5 +91,14 @@ public class ServiceRegistry {
 		}
 		return result;
 	}
+	
+	public static void RemoveIndexList(int index) {
+		servicesClasses.remove(index);
+	}
+	public static String getClassName(int index) {
+		return servicesClasses.get(index).getName();
+	}
+
+	
 
 }
