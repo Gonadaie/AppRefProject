@@ -34,7 +34,7 @@ public class ServiceRegistry {
 	private static boolean checkServiceBLTiClass(Class<?> cl) {
 		try {
 			
-			//Check if the class is implementing the ServiceBRi interface
+			//Check if the class is implementing the Service interface
 			Class<?>[] interfaces = cl.getInterfaces();
 			for(Class<?> c : interfaces) {
 				if(c != Service.class)
@@ -50,7 +50,7 @@ public class ServiceRegistry {
 
 			System.out.println("Il repassera par là");
 
-			//Check if the class is public and abstract
+			//Check if the class is public and not abstract
 			if (	Modifier.isPublic(cl.getModifiers()) &&
 					Modifier.isAbstract(cl.getModifiers()))
 				return false;
@@ -59,8 +59,9 @@ public class ServiceRegistry {
 			Field[] fields = cl.getDeclaredFields();
 			boolean finalSocket = false;
 			for(Field f : fields) {
-				if(Modifier.isFinal(f.getModifiers()))
-					finalSocket = true;
+				if(f.getType() == Socket.class)
+                    if(Modifier.isFinal(f.getModifiers()))
+                        finalSocket = true;
 			}
 			if(!finalSocket) return false;
 
