@@ -64,6 +64,20 @@ public class ServiceServeurBRiProg implements ServiceServeurBRi {
                         String className = in.readLine();
                         URL[] urls = new URL[]{ new URL(prog.getFTPAdress()) };
                         URLClassLoader ucl = new URLClassLoader(urls);
+                        /*URLClassLoader ucl = new URLClassLoader(new URL[] {
+                        		new URL(prog.getFTPAdress())}) {
+                        	public Class<?> loadClass(String name) throws ClassNotFoundException{
+                        		//if(ServiceRegistry.getServiceList().contains())
+                        		List<Class<? extends Service>> list = ServiceRegistry.getServiceList();
+                        		for(List<Class<? extends Service>> item : list){
+                        			if(item.getName().equals(name)){
+                        				return findclass(name);
+                        			}
+                        		}
+                        		return super.loadclass(name);
+                        		
+                        	}
+                        })*/
                         try {
                             ServiceRegistry.addService(ucl.loadClass(className));
                         }
@@ -72,11 +86,20 @@ public class ServiceServeurBRiProg implements ServiceServeurBRi {
                         break;
 
                     case 2:
+                    	out.println("Choisissez un service dans la liste de ceux existant");
                         out.println(ServiceRegistry.toStringue());
                         int choice = Integer.valueOf(in.readLine()).intValue();
-
-                        break;
-
+                        String ClassNameMaj = ServiceRegistry.getClassName(choice);
+                        ServiceRegistry.RemoveIndexList(choice-1);
+                        URL[] urlsNew = new URL[]{ new URL(prog.getFTPAdress()) };
+                        URLClassLoader uclNew = new URLClassLoader(urlsNew);
+                        try {
+                            ServiceRegistry.addService(uclNew.loadClass(ClassNameMaj));
+                        }catch(ClassNotFoundException e){out.println("La classe " + ClassNameMaj + " n'est pas trouvable");}
+                        catch(Exception e) {
+                        	e.printStackTrace();
+                        }
+						break;
                     case 3:
                         out.println("Entrez la nouvelle URL de votre serveur FTP : ");
                         String URL = in.readLine();
