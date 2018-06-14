@@ -60,6 +60,7 @@ public class ServiceServeurBRiProg implements ServiceServeurBRi {
 				switch(Integer.valueOf(response).intValue()) {
 
                     case 1:
+                    	/*!!!!!!!!!!!A faire:Verification que la classe n'existe pas déjà !!!!!!!!!!!*/ 
                         out.println("Entrez le nom du fichier .class de votre serveur FTP : ");
                         String className = in.readLine();
                         URL[] urls = new URL[]{ new URL(prog.getFTPAdress()) };
