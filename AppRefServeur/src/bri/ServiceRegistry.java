@@ -92,11 +92,11 @@ public class ServiceRegistry {
 		return result;
 	}
 	
-	public static void RemoveIndexList(int index) {
-		servicesClasses.remove(index);
+	public static void removeService(int index) {
+		servicesClasses.remove(index-1);
 	}
-	public static String getClassName(int index) {
-		return servicesClasses.get(index).getName();
+	public static String getServiceClassName(int index) {
+		return servicesClasses.get(index-1).getName();
 	}
 
 	

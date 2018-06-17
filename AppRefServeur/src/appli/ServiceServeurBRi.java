@@ -1,4 +1,4 @@
-package bri;
+package appli;
 
 public interface ServiceServeurBRi extends Runnable {
 

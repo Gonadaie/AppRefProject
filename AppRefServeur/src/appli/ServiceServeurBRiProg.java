@@ -1,17 +1,17 @@
-package bri;
+package appli;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
+import bri.ServiceNonConformeException;
+import bri.ServiceRegistry;
 import prog.Programmeur;
 
 public class ServiceServeurBRiProg implements ServiceServeurBRi {
@@ -60,25 +60,17 @@ public class ServiceServeurBRiProg implements ServiceServeurBRi {
 				switch(Integer.valueOf(response).intValue()) {
 
                     case 1:
-                    	/*!!!!!!!!!!!A faire:Verification que la classe n'existe pas déjà !!!!!!!!!!!*/ 
                         out.println("Entrez le nom du fichier .class de votre serveur FTP : ");
                         String className = in.readLine();
+
+                        if(ServiceRegistry.toStringue().contains(className)){
+                        	out.println("Ce service existe deja\nSi vous souhaitez le mettre a jour, utiliser l'option numero 2");
+                        	break;
+						}
+
                         URL[] urls = new URL[]{ new URL(prog.getFTPAdress()) };
                         URLClassLoader ucl = new URLClassLoader(urls);
-                        /*URLClassLoader ucl = new URLClassLoader(new URL[] {
-                        		new URL(prog.getFTPAdress())}) {
-                        	public Class<?> loadClass(String name) throws ClassNotFoundException{
-                        		//if(ServiceRegistry.getServiceList().contains())
-                        		List<Class<? extends Service>> list = ServiceRegistry.getServiceList();
-                        		for(List<Class<? extends Service>> item : list){
-                        			if(item.getName().equals(name)){
-                        				return findclass(name);
-                        			}
-                        		}
-                        		return super.loadclass(name);
-                        		
-                        	}
-                        })*/
+
                         try {
                             ServiceRegistry.addService(ucl.loadClass(className));
                         }
@@ -90,21 +82,31 @@ public class ServiceServeurBRiProg implements ServiceServeurBRi {
                     	out.println("Choisissez un service dans la liste de ceux existant");
                         out.println(ServiceRegistry.toStringue());
                         int choice = Integer.valueOf(in.readLine()).intValue();
-                        String ClassNameMaj = ServiceRegistry.getClassName(choice);
-                        ServiceRegistry.RemoveIndexList(choice-1);
+
+                        String classNameMaj = ServiceRegistry.getServiceClassName(choice);
+                        ServiceRegistry.removeService(choice);
+
                         URL[] urlsNew = new URL[]{ new URL(prog.getFTPAdress()) };
                         URLClassLoader uclNew = new URLClassLoader(urlsNew);
                         try {
-                            ServiceRegistry.addService(uclNew.loadClass(ClassNameMaj));
-                        }catch(ClassNotFoundException e){out.println("La classe " + ClassNameMaj + " n'est pas trouvable");}
+                            ServiceRegistry.addService(uclNew.loadClass(classNameMaj));
+                        }
+                        catch(ClassNotFoundException e){out.println("La classe " + classNameMaj + " n'est pas trouvable");}
                         catch(Exception e) {
                         	e.printStackTrace();
                         }
 						break;
                     case 3:
-                        out.println("Entrez la nouvelle URL de votre serveur FTP : ");
-                        String URL = in.readLine();
-                        prog.changeFTPAdress(URL);
+						out.println("Entrez la nouvelle URL de votre serveur FTP : ");
+						String url = in.readLine();
+                    	while(true) {
+                    		if(url.length() > 7)
+	                    		if(url.substring(0, 6).equals("ftp://")) break;
+							out.println("Cette adresse ne semble pas etre une adresse FTP... Veuillez reessayer : ");
+							url = in.readLine();
+						}
+                        prog.changeFTPAdress(url);
+                    	out.println("Adresse FTP changee pour " + url);
                         break;
 
                     case 4:

@@ -1,15 +1,5 @@
 package appli;
 
-import java.net.Socket;
-import java.net.URLClassLoader;
-import java.util.Scanner;
-
-import bri.ServeurBRi;
-import bri.ServiceServeurBRi;
-import bri.ServiceServeurBRiAma;
-import bri.ServiceServeurBRiProg;
-import bri.ServiceNonConformeException;
-
 public class BRiLaunch {
 	private final static int PORT_SERVICE_AMA = 3000;
 	private final static int PORT_SERVICE_PROG = 3500;
